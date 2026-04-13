@@ -49,6 +49,8 @@ type RuleTestError<MessageId extends string> = InvalidTestCase<MessageId, []>;
 
 /**
  * Creates test cases for magic CSS values rule.
+ * Invalid cases are NOT in const declarations (magic CSS should be flagged)
+ * Valid cases are in const declarations (magic CSS should be skipped)
  */
 export function createMagicCssTestCases(
   message: string,
@@ -56,19 +58,19 @@ export function createMagicCssTestCases(
 ): RuleTestError<string>[] {
   return [
     {
-      code: `const styles = { padding: '16px' };`,
+      code: `let styles = { padding: '16px' };`,
       errors: [{ messageId: ruleName }],
     },
     {
-      code: `const theme = { color: '#abcdef' };`,
+      code: `let theme = { color: '#abcdef' };`,
       errors: [{ messageId: ruleName }],
     },
     {
-      code: `const theme = { color: 'rgba(255, 0, 0, 0.5)' };`,
+      code: `let theme = { color: 'rgba(255, 0, 0, 0.5)' };`,
       errors: [{ messageId: ruleName }],
     },
     {
-      code: `const theme = { color: 'hsl(120, 100%, 50%)' };`,
+      code: `let theme = { color: 'hsl(120, 100%, 50%)' };`,
       errors: [{ messageId: ruleName }],
     },
   ];
