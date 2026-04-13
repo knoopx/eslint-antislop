@@ -9,7 +9,6 @@ export const RULE_REGISTRY = [
 
   { id: "no-hardcoded-secrets", name: "noHardcodedSecrets" },
   { id: "no-inner-html", name: "noInnerHtml" },
-  { id: "no-sql-concat", name: "noSqlConcat" },
 
   { id: "no-empty-catch", name: "noEmptyCatch" },
   { id: "no-console-error-only", name: "noConsoleErrorOnly" },
@@ -17,7 +16,6 @@ export const RULE_REGISTRY = [
   { id: "no-todo", name: "noTodo" },
   { id: "no-god-function", name: "noGodFunction" },
 
-  { id: "no-express-unhandled", name: "noExpressUnhandled" },
   { id: "no-error-info-leak", name: "noErrorInfoLeak" },
 
   { id: "no-hallucinated-imports", name: "noHallucinatedImports" },
@@ -50,8 +48,6 @@ export const RULE_REGISTRY = [
   { id: "no-placeholder-data", name: "noPlaceholderData" },
   { id: "no-generic-error-messages", name: "noGenericErrorMessages" },
   { id: "no-todo-without-issue", name: "noTodoWithoutIssue" },
-  { id: "no-async-without-await", name: "noAsyncWithoutAwait" },
-  { id: "no-missing-return-types", name: "noMissingReturnTypes" },
 
   { id: "no-fallback-defaults", name: "noFallbackDefaults" },
 

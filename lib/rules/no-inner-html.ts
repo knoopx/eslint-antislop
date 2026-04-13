@@ -9,7 +9,7 @@ export const noInnerHtml: AstRule = {
   category: "security",
   severity: "warn",
   languages: ["js", "ts", "jsx", "tsx", "mjs", "cjs"],
-  messageId: "inner-html",
+  messageId: "no-inner-html",
   messageTemplate:
     "innerHTML/dangerouslySetInnerHTML is an XSS vector. Use textContent or a sanitizer.",
   detect: createTraversalDetect("*", (node) => {
@@ -23,6 +23,7 @@ export const noInnerHtml: AstRule = {
           line: node.loc.start.line,
           column: node.loc.start.column + 1,
           message: "innerHTML assignment detected - potential XSS vector",
+          messageId: "no-inner-html",
         };
       }
     }
@@ -33,6 +34,7 @@ export const noInnerHtml: AstRule = {
           line: node.loc.start.line,
           column: node.loc.start.column + 1,
           message: "dangerouslySetInnerHTML detected - potential XSS vector",
+          messageId: "no-inner-html",
         };
       }
     }

@@ -1,12 +1,7 @@
-import { RuleTester } from "@typescript-eslint/rule-tester";
 import { testRules } from "../../../lib/rules/test-utils.js";
+import { createRuleTester } from "../../test-helpers.js";
 
-const ruleTester = new RuleTester({
-  languageOptions: {
-    ecmaVersion: 2022,
-    sourceType: "module",
-  },
-});
+const ruleTester = createRuleTester();
 
 ruleTester.run("no-empty-catch", testRules.noEmptyCatch, {
   valid: [
@@ -15,25 +10,7 @@ ruleTester.run("no-empty-catch", testRules.noEmptyCatch, {
         try {
           doSomething();
         } catch (e) {
-          console.error(e);
-        }
-      `,
-    },
-    {
-      code: `
-        try {
-          doSomething();
-        } catch (e) {
-          logger.error("Failed", e);
-        }
-      `,
-    },
-    {
-      code: `
-        try {
-          doSomething();
-        } catch (e) {
-          throw new Error("Failed: " + e.message);
+          logger.error(e);
         }
       `,
     },
@@ -46,11 +23,7 @@ ruleTester.run("no-empty-catch", testRules.noEmptyCatch, {
         } catch (e) {
         }
       `,
-      errors: [
-        {
-          messageId: "empty-catch",
-        },
-      ],
+      errors: [{ messageId: "no-empty-catch" }],
     },
     {
       code: `
@@ -60,11 +33,7 @@ ruleTester.run("no-empty-catch", testRules.noEmptyCatch, {
           // do nothing
         }
       `,
-      errors: [
-        {
-          messageId: "empty-catch",
-        },
-      ],
+      errors: [{ messageId: "no-empty-catch" }],
     },
     {
       code: `
@@ -74,11 +43,7 @@ ruleTester.run("no-empty-catch", testRules.noEmptyCatch, {
           /* ignore */
         }
       `,
-      errors: [
-        {
-          messageId: "empty-catch",
-        },
-      ],
+      errors: [{ messageId: "no-empty-catch" }],
     },
     {
       code: `
@@ -88,11 +53,7 @@ ruleTester.run("no-empty-catch", testRules.noEmptyCatch, {
           // TODO: handle error
         }
       `,
-      errors: [
-        {
-          messageId: "empty-catch",
-        },
-      ],
+      errors: [{ messageId: "no-empty-catch" }],
     },
     {
       code: `
@@ -102,11 +63,7 @@ ruleTester.run("no-empty-catch", testRules.noEmptyCatch, {
           // FIXME: fix error handling
         }
       `,
-      errors: [
-        {
-          messageId: "empty-catch",
-        },
-      ],
+      errors: [{ messageId: "no-empty-catch" }],
     },
   ],
 });

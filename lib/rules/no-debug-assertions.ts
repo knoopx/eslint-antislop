@@ -8,7 +8,9 @@ export const noDebugAssertions: AstRule = {
   category: "codebase-health",
   severity: "error",
   languages: ["js", "ts", "jsx", "tsx", "mjs", "cjs"],
-  messageId: "debug-statement",
+  messageId: "no-debug-statement",
   messageTemplate: "Debug statement detected. Remove it before shipping.",
-  detect: createDebugStatementRule("Debug statement detected. Remove it."),
+  detect: createDebugStatementRule("Debug statement detected. Remove it.", {
+    messageId: "no-debug-statement",
+  }),
 };

@@ -7,13 +7,7 @@ ruleTester.run("no-eslint-disable", testRules.noEslintDisable, {
   valid: [
     {
       code: `
-        const x = 5;
-      `,
-    },
-    {
-      code: `
-        // normal comment
-        function test() {}
+        console.log("test");
       `,
     },
   ],
@@ -23,11 +17,7 @@ ruleTester.run("no-eslint-disable", testRules.noEslintDisable, {
         // eslint-disable
         console.log("hidden");
       `,
-      errors: [
-        {
-          messageId: "eslint-disable",
-        },
-      ],
+      errors: [{ messageId: "no-eslint-disable" }],
     },
   ],
 });

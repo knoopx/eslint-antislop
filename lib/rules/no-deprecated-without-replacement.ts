@@ -8,7 +8,7 @@ export const noDeprecatedWithoutReplacement: AstRule = {
   category: "codebase-health",
   severity: "warn",
   languages: ["js", "ts", "jsx", "tsx", "mjs", "cjs"],
-  messageId: "deprecated-no-replacement",
+  messageId: "no-deprecated-no-replacement",
   messageTemplate:
     "@deprecated without replacement suggestion. Either provide migration path or delete the code.",
   detect(context: ESLintRule.RuleContext): AstFinding[] {

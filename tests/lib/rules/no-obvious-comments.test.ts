@@ -51,11 +51,13 @@ ruleTester.run("no-obvious-comments", testRules.noObviousComments, {
           count++;
         }
       `,
-      errors: [
-        {
-          messageId: "obvious-comment",
-        },
-      ],
+      output: `
+        function increment() {
+          let count = 0;
+          count++;
+        }
+      `,
+      errors: [{ messageId: "no-obvious-comment" }],
     },
     {
       code: `
@@ -64,22 +66,22 @@ ruleTester.run("no-obvious-comments", testRules.noObviousComments, {
           return a + b;
         }
       `,
-      errors: [
-        {
-          messageId: "obvious-comment",
-        },
-      ],
+      output: `
+        function sum(a, b) {
+          return a + b;
+        }
+      `,
+      errors: [{ messageId: "no-obvious-comment" }],
     },
     {
       code: `
         // Initialize the variable
         let x = 5;
       `,
-      errors: [
-        {
-          messageId: "obvious-comment",
-        },
-      ],
+      output: `
+        let x = 5;
+      `,
+      errors: [{ messageId: "no-obvious-comment" }],
     },
     {
       code: `
@@ -88,55 +90,52 @@ ruleTester.run("no-obvious-comments", testRules.noObviousComments, {
           return users.find(u => u.id === id);
         }
       `,
-      errors: [
-        {
-          messageId: "obvious-comment",
-        },
-      ],
+      output: `
+        function getUser() {
+          return users.find(u => u.id === id);
+        }
+      `,
+      errors: [{ messageId: "no-obvious-comment" }],
     },
     {
       code: `
         // Import the module
         import fs from "fs";
       `,
-      errors: [
-        {
-          messageId: "obvious-comment",
-        },
-      ],
+      output: `
+        import fs from "fs";
+      `,
+      errors: [{ messageId: "no-obvious-comment" }],
     },
     {
       code: `
         // Export the function
         export default myFunction;
       `,
-      errors: [
-        {
-          messageId: "obvious-comment",
-        },
-      ],
+      output: `
+        export default myFunction;
+      `,
+      errors: [{ messageId: "no-obvious-comment" }],
     },
     {
       code: `
         // Assign the value
         x = 10;
       `,
-      errors: [
-        {
-          messageId: "obvious-comment",
-        },
-      ],
+      output: `
+        x = 10;
+      `,
+      errors: [{ messageId: "no-obvious-comment" }],
     },
     {
       code: `
         // Call the function
         myFunction();
       `,
-      errors: [
-        {
-          messageId: "obvious-comment",
-        },
-      ],
+      output: `
+        myFunction();
+      `,
+      errors: [{ messageId: "no-obvious-comment" }],
     },
     {
       code: `
@@ -145,11 +144,12 @@ ruleTester.run("no-obvious-comments", testRules.noObviousComments, {
           console.log(arr[i]);
         }
       `,
-      errors: [
-        {
-          messageId: "obvious-comment",
-        },
-      ],
+      output: `
+        for (let i = 0; i < arr.length; i++) {
+          console.log(arr[i]);
+        }
+      `,
+      errors: [{ messageId: "no-obvious-comment" }],
     },
   ],
 });

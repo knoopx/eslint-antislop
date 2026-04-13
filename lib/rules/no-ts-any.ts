@@ -2,12 +2,7 @@ import type { AstRule } from "./types.js";
 import { createNodeTypeDetect } from "./utils/createRule.js";
 import { createFinding } from "./utils/createFinding.js";
 
-const ANY_TYPES = [
-  "TSAnyKeyword",
-  "TSArrayType",
-  "TSTypeAssertion",
-  "TSAsExpression",
-];
+const ANY_TYPES = ["TSAnyKeyword", "TSTypeAssertion"];
 
 export const noTsAny: AstRule = {
   id: "no-ts-any",
@@ -17,26 +12,28 @@ export const noTsAny: AstRule = {
   category: "ai-tell",
   severity: "warn",
   languages: ["ts", "tsx"],
-  messageId: "default",
+  messageId: "no-ts-any",
   messageTemplate:
     "TypeScript `any` type bypasses type safety. Use a specific type.",
   detect: createNodeTypeDetect(ANY_TYPES, (node) => {
     if (node.type === "TSAnyKeyword") {
-      return createFinding(node, "TypeScript `any` type bypasses type safety");
+      return createFinding(
+        node,
+        "TypeScript `any` type bypasses type safety",
+        1,
+        {
+          messageId: "no-ts-any",
+        },
+      );
     }
 
     if (
-      node.type === "TSArrayType" &&
-      node.elementType?.type === "TSAnyKeyword"
-    ) {
-      return createFinding(node, "TypeScript `any` type in array element");
-    }
-
-    if (
-      (node.type === "TSTypeAssertion" || node.type === "TSAsExpression") &&
+      node.type === "TSTypeAssertion" &&
       node.typeAnnotation?.type === "TSAnyKeyword"
     ) {
-      return createFinding(node, "Type assertion to `any`");
+      return createFinding(node, "Type assertion to `any`", 1, {
+        messageId: "no-ts-any",
+      });
     }
     return;
   }),

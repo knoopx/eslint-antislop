@@ -10,7 +10,7 @@ export const noNoopPatterns: AstRule = {
   category: "technical-debt",
   severity: "warn",
   languages: ["js", "ts", "jsx", "tsx", "mjs", "cjs"],
-  messageId: "noop-pattern",
+  messageId: "no-noop-pattern",
   messageTemplate:
     "No-op pattern detected. Implement the logic or remove the stub.",
   detect(
@@ -38,7 +38,9 @@ export const noNoopPatterns: AstRule = {
       (f) => ({
         line: f.line,
         column: f.column,
-        message: "No-op pattern found",
+        message:
+          "No-op code does nothing but takes up space and creates confusion. AI often generates placeholder implementations that look like work but aren't. Either implement the actual functionality or remove the dead code entirely.",
+        messageId: "no-noop-pattern",
       }),
     );
   },

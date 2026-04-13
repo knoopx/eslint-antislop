@@ -1,35 +1,37 @@
 import { testRules } from "../../../lib/rules/test-utils.js";
-import { createPlaceholderDataTestCases, createRuleTester } from "../../test-helpers.js";
+import { createRuleTester } from "../../test-helpers.js";
 
 const valid = [
   {
     code: `
       function getUser() {
-        return db.find({ id: userId });
+        return { name: actualName, email: actualEmail };
       }
     `,
   },
   {
     code: `
-      const config = {
-        apiUrl: process.env.API_URL
-      };
-    `,
-  },
-  {
-    code: `
-      function calculatePrice(items) {
-        return items.reduce((sum, item) => sum + item.price, 0);
-      }
+      const user = { id: 1, name: "Alice Johnson", email: "alice@example.com" };
     `,
   },
 ];
-
-const invalid = createPlaceholderDataTestCases("Placeholder data detected. Replace with actual values.", "placeholder-data");
 
 const ruleTester = createRuleTester();
 
 ruleTester.run("no-placeholder-data", testRules.noPlaceholderData, {
   valid,
-  invalid,
+  invalid: [
+    {
+      code: `const data = { name: 'John Doe', email: 'test@example.com' };`,
+      errors: [{ messageId: "no-placeholder-data" }],
+    },
+    {
+      code: `const user = { id: 1, name: 'Dummy Name' };`,
+      errors: [{ messageId: "no-placeholder-data" }],
+    },
+    {
+      code: `const config = { api_key: 'xxx-xxx-xxx' };`,
+      errors: [{ messageId: "no-placeholder-data" }],
+    },
+  ],
 });

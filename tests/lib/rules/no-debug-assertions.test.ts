@@ -1,96 +1,57 @@
-import { RuleTester } from "@typescript-eslint/rule-tester";
 import { testRules } from "../../../lib/rules/test-utils.js";
+import { createRuleTester } from "../../test-helpers.js";
 
-const ruleTester = new RuleTester({
-  languageOptions: {
-    ecmaVersion: 2022,
-    sourceType: "module",
-  },
-});
+const ruleTester = createRuleTester();
 
 ruleTester.run("no-debug-assertions", testRules.noDebugAssertions, {
   valid: [
     {
       code: `
-          function doSomething() {
-            return 42;
-          }
-        `,
-    },
-    {
-      code: `
-          console.log("hello");
-        `,
-    },
-    {
-      code: `
-          console.error("error");
-        `,
-    },
-    {
-      code: `
-          const x = 5;
-        `,
+        function validate(x) {
+          if (x < 0) throw new Error("x must be positive");
+          return x;
+        }
+      `,
     },
   ],
   invalid: [
     {
       code: `
+        debugger;
+      `,
+      errors: [{ messageId: "no-debug-statement" }],
+    },
+    {
+      code: `
+        function check() {
           debugger;
-        `,
-      errors: [
-        {
-          messageId: "debug-statement",
-        },
-      ],
+          return true;
+        }
+      `,
+      errors: [{ messageId: "no-debug-statement" }],
     },
     {
       code: `
-          function check() {
-            debugger;
-            return true;
-          }
-        `,
-      errors: [
-        {
-          messageId: "debug-statement",
-        },
-      ],
+        console.assert(condition, "message");
+      `,
+      errors: [{ messageId: "no-debug-statement" }],
     },
     {
       code: `
-          console.assert(condition, "message");
-        `,
-      errors: [
-        {
-          messageId: "debug-statement",
-        },
-      ],
+        function validate() {
+          console.assert(x > 0, "x must be positive");
+        }
+      `,
+      errors: [{ messageId: "no-debug-statement" }],
     },
     {
       code: `
-          function validate() {
-            console.assert(x > 0, "x must be positive");
-          }
-        `,
+        debugger;
+        console.assert(condition);
+      `,
       errors: [
-        {
-          messageId: "debug-statement",
-        },
-      ],
-    },
-    {
-      code: `
-          debugger;
-          console.assert(condition);
-        `,
-      errors: [
-        {
-          messageId: "debug-statement",
-        },
-        {
-          messageId: "debug-statement",
-        },
+        { messageId: "no-debug-statement" },
+        { messageId: "no-debug-statement" },
       ],
     },
   ],

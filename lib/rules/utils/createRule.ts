@@ -26,7 +26,7 @@ function processChildNode(
   results: TSESTree.Node[],
 ): void {
   if (!child || typeof child !== "object") return;
-  if (!('type' in child)) return;
+  if (!("type" in child)) return;
   const childNode = child as TSESTree.Node;
   traverseNode(childNode, selectors, results);
 }
@@ -178,7 +178,6 @@ export function createCallExpressionDetect(
   return createTraversalDetect("CallExpression", checkCall);
 }
 
-
 export function createPatternMatchDetect(
   patterns: RegExp[],
   antiPatterns: RegExp[] | undefined,
@@ -197,7 +196,6 @@ export function createPatternMatchDetect(
       return [];
     }
 
-    // Check if value matches any pattern before generating findings
     if (!patterns.some((p) => p.test(value))) {
       return [];
     }
@@ -223,6 +221,7 @@ interface CommentPatternDetectOptions {
   patterns: RegExp[];
   /** Patterns to exclude */
   antiPatterns?: RegExp[];
+  messageId?: string;
 }
 
 /**
@@ -234,7 +233,13 @@ import { findCommentsMatching } from "./find-comments.js";
 export function createCommentPatternDetect(
   options: CommentPatternDetectOptions,
 ): AstRule["detect"] {
-  const { message, includeText = true, patterns, antiPatterns } = options;
+  const {
+    message,
+    includeText = true,
+    patterns,
+    antiPatterns,
+    messageId,
+  } = options;
 
   return (context: ESLintRule.RuleContext): AstFinding[] => {
     const comments = findCommentsMatching(
@@ -245,27 +250,28 @@ export function createCommentPatternDetect(
     return comments.map(({ line, column, text }) => ({
       line: line + 1,
       column: column + 1,
-      message: includeText
-        ? `${message} (found in: "${text}")`
-        : message,
+      message: includeText ? `${message} (found in: "${text}")` : message,
+      messageId,
     }));
   };
 }
 
 /**
  * Creates a detect function for pattern matching in comments
- * Uses findCommentsMatching internally for consistency
- * @deprecated Use createCommentPatternDetect with options object instead
+ * Uses findCommentsMatching internally for consistency.
+ * @deprecated Use createCommentPatternDetect with options object instead.
  */
 export function createCommentPatternDetectOld(
   patterns: RegExp[],
   message: string,
   antiPatterns?: RegExp[],
+  options?: { messageId?: string },
 ): AstRule["detect"] {
   return createCommentPatternDetect({
     message,
     patterns,
     antiPatterns,
     includeText: true,
+    ...options,
   });
 }

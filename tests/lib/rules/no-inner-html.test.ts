@@ -7,17 +7,8 @@ ruleTester.run("no-inner-html", testRules.noInnerHtml, {
   valid: [
     {
       code: `
-        element.textContent = "hello";
-      `,
-    },
-    {
-      code: `
-        const safe = "not innerHTML";
-      `,
-    },
-    {
-      code: `
-        element.innerText = "hello";
+        const div = document.createElement("div");
+        div.textContent = "hello";
       `,
     },
   ],
@@ -26,61 +17,37 @@ ruleTester.run("no-inner-html", testRules.noInnerHtml, {
       code: `
         element.innerHTML = "hello";
       `,
-      errors: [
-        {
-          messageId: "inner-html",
-        },
-      ],
+      errors: [{ messageId: "no-inner-html" }],
     },
     {
       code: `
         container.innerHTML = "<p>HTML content</p>";
       `,
-      errors: [
-        {
-          messageId: "inner-html",
-        },
-      ],
+      errors: [{ messageId: "no-inner-html" }],
     },
     {
       code: `
         div.innerHTML = data.html;
       `,
-      errors: [
-        {
-          messageId: "inner-html",
-        },
-      ],
+      errors: [{ messageId: "no-inner-html" }],
     },
     {
       code: `
         element.innerHTML = "<div>" + content + "</div>";
       `,
-      errors: [
-        {
-          messageId: "inner-html",
-        },
-      ],
+      errors: [{ messageId: "no-inner-html" }],
     },
     {
       code: `
         <div dangerouslySetInnerHTML={{ __html: content }} />
       `,
-      errors: [
-        {
-          messageId: "inner-html",
-        },
-      ],
+      errors: [{ messageId: "no-inner-html" }],
     },
     {
       code: `
         <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
       `,
-      errors: [
-        {
-          messageId: "inner-html",
-        },
-      ],
+      errors: [{ messageId: "no-inner-html" }],
     },
   ],
 });

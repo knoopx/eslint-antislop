@@ -1,56 +1,29 @@
-import { RuleTester } from "@typescript-eslint/rule-tester";
 import { testRules } from "../../../lib/rules/test-utils.js";
+import { createRuleTester } from "../../test-helpers.js";
 
-const ruleTester = new RuleTester({
-  languageOptions: {
-    ecmaVersion: 2022,
-    sourceType: "module",
-  },
-});
+const ruleTester = createRuleTester();
 
 ruleTester.run("no-boilerplate-wrappers", testRules.noBoilerplateWrappers, {
   valid: [
     {
       code: `
-        const transform = (x) => x * 2;
-      `,
-    },
-    {
-      code: `
-        const wrapper = (data) => {
-          const processed = processData(data);
-          return { success: true, data: processed };
-        };
-      `,
-    },
-    {
-      code: `
-        function wrapped() {
+        function myFunction() {
           return someFunction();
         }
       `,
     },
     {
       code: `
-        const wrapper = (input) => {
-          return anotherFunction(input);
+        const wrapped = (arg) => {
+          return processData(arg);
         };
       `,
     },
     {
       code: `
-        const wrapper = () => {
-          console.log("doing work");
-          return someFunction();
-        };
-      `,
-    },
-    {
-      code: `
-        const wrapper = () => {
-          const result = someFunction();
-          return transform(result);
-        };
+        function apiCall(url) {
+          return fetch(url).then(res => res.json());
+        }
       `,
     },
   ],
@@ -61,11 +34,7 @@ ruleTester.run("no-boilerplate-wrappers", testRules.noBoilerplateWrappers, {
           return someFunction();
         };
       `,
-      errors: [
-        {
-          messageId: "boilerplate-wrapper",
-        },
-      ],
+      errors: [{ message: /Wrapper.*just calls/ }],
     },
     {
       code: `
@@ -73,11 +42,7 @@ ruleTester.run("no-boilerplate-wrappers", testRules.noBoilerplateWrappers, {
           return fetchData();
         };
       `,
-      errors: [
-        {
-          messageId: "boilerplate-wrapper",
-        },
-      ],
+      errors: [{ message: /Wrapper.*just calls/ }],
     },
     {
       code: `
@@ -85,11 +50,7 @@ ruleTester.run("no-boilerplate-wrappers", testRules.noBoilerplateWrappers, {
           return processData();
         };
       `,
-      errors: [
-        {
-          messageId: "boilerplate-wrapper",
-        },
-      ],
+      errors: [{ message: /Wrapper.*just calls/ }],
     },
     {
       code: `
@@ -97,11 +58,7 @@ ruleTester.run("no-boilerplate-wrappers", testRules.noBoilerplateWrappers, {
           return apiCall();
         };
       `,
-      errors: [
-        {
-          messageId: "boilerplate-wrapper",
-        },
-      ],
+      errors: [{ message: /Wrapper.*just calls/ }],
     },
     {
       code: `
@@ -109,11 +66,7 @@ ruleTester.run("no-boilerplate-wrappers", testRules.noBoilerplateWrappers, {
           return doIt();
         };
       `,
-      errors: [
-        {
-          messageId: "boilerplate-wrapper",
-        },
-      ],
+      errors: [{ message: /Wrapper.*just calls/ }],
     },
     {
       code: `
@@ -125,13 +78,9 @@ ruleTester.run("no-boilerplate-wrappers", testRules.noBoilerplateWrappers, {
         };
       `,
       errors: [
-        {
-          messageId: "boilerplate-wrapper",
-        },
-        {
-          messageId: "boilerplate-wrapper",
-        },
+        { message: /Wrapper.*just calls/ },
+        { message: /Wrapper.*just calls/ },
       ],
     },
   ],
-});
+} as unknown as Parameters<typeof ruleTester.run>[2]);

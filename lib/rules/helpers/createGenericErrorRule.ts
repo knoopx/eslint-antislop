@@ -38,18 +38,23 @@ function isGenericErrorMessage(value: string): boolean {
 function createFinding(
   node: { loc: { start: { line: number; column: number } } },
   message: string,
+  messageId?: string,
 ): AstFinding {
   return {
     line: node.loc.start.line,
     column: node.loc.start.column + 1,
     message,
+    messageId,
   };
 }
 
 /**
  * Creates a detect function for generic error messages.
  */
-export function createGenericErrorRule(message: string): AstRule["detect"] {
+export function createGenericErrorRule(
+  message: string,
+  messageId?: string,
+): AstRule["detect"] {
   return createNodeTypeDetect(["ThrowStatement"], (node) => {
     if (!isValidErrorThrow(node)) return [];
 
@@ -64,7 +69,11 @@ export function createGenericErrorRule(message: string): AstRule["detect"] {
         isGenericErrorMessage(arg.value)
       ) {
         findings.push(
-          createFinding(node, message.replace("{message}", arg.value)),
+          createFinding(
+            node,
+            message.replace("{message}", arg.value),
+            messageId,
+          ),
         );
       }
     }

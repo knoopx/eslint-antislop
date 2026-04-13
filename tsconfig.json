@@ -24,6 +24,6 @@
     "allowArbitraryExtensions": true,
     "types": ["node", "bun"]
   },
-  "include": ["configs/**/*", "lib/**/*", "tests/**/*"],
+  "include": ["configs/**/*", "lib/**/*", "tests/**/*", "*.ts"],
   "exclude": ["node_modules", "dist", "build"]
 }

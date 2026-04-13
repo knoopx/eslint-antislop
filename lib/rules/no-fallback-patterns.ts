@@ -19,13 +19,14 @@ export const noFallbackPatterns: AstRule = {
   category: "technical-debt",
   severity: "warn",
   languages: ["js", "ts", "jsx", "tsx", "mjs", "cjs"],
-  messageId: "fallback-pattern",
+  messageId: "no-fallback-pattern",
   messageTemplate:
     "Fallback pattern detected. Either implement properly or handle the error explicitly.",
   detect: createCommentPatternDetect({
     patterns: FALLBACK_PATTERNS,
     antiPatterns: ANTI_PATTERNS,
-    message: "Fallback pattern found",
+    message:
+      "Fallback code indicates incomplete implementation. Missing data should crash visibly rather than silently using defaults, which masks bugs and creates inconsistent behavior. Implement the full feature or handle the error explicitly.",
     includeText: false,
   }),
 };

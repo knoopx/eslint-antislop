@@ -1,5 +1,5 @@
 import { testRules } from "../../../lib/rules/test-utils.js";
-import { createOverconfidentCommentTestCases, createRuleTester } from "../../test-helpers.js";
+import { createRuleTester } from "../../test-helpers.js";
 
 const valid = [
   {
@@ -22,11 +22,32 @@ const valid = [
   },
 ];
 
-const invalid = createOverconfidentCommentTestCases("Overconfident comment detected", "overconfident-comment");
+const invalid = [
+  {
+    code: `// Obviously this works`,
+    output: ``,
+    errors: [{ message: /Delete overconfident comment/ }],
+  },
+  {
+    code: `// Clearly the best approach`,
+    output: ``,
+    errors: [{ message: /Delete overconfident comment/ }],
+  },
+  {
+    code: `// Definitely correct`,
+    output: ``,
+    errors: [{ message: /Delete overconfident comment/ }],
+  },
+  {
+    code: `// Of course this will work`,
+    output: ``,
+    errors: [{ message: /Delete overconfident comment/ }],
+  },
+];
 
 const ruleTester = createRuleTester();
 
 ruleTester.run("no-overconfident-comments", testRules.noOverconfidentComments, {
   valid,
   invalid,
-});
+} as unknown as Parameters<typeof ruleTester.run>[2]);

@@ -8,7 +8,7 @@ export const noDeadCodePatterns: AstRule = {
   category: "codebase-health",
   severity: "warn",
   languages: ["js", "ts", "jsx", "tsx", "mjs", "cjs"],
-  messageId: "dead-code-pattern",
+  messageId: "no-dead-code-pattern",
   messageTemplate:
     "Commented-out code detected. Delete it - do not preserve dead code.",
   detect(context: ESLintRule.RuleContext): AstFinding[] {

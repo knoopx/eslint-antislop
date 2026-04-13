@@ -12,8 +12,22 @@ export function findCommentsMatching(
   sourceCode: ESLintRule.RuleContext["sourceCode"],
   patterns: RegExp[],
   antiPatterns?: RegExp[],
-): Array<{ line: number; column: number; text: string }> {
-  const findings: Array<{ line: number; column: number; text: string }> = [];
+): Array<{
+  line: number;
+  column: number;
+  text: string;
+  type: string;
+  rangeStart: number;
+  rangeEnd: number;
+}> {
+  const findings: Array<{
+    line: number;
+    column: number;
+    text: string;
+    type: string;
+    rangeStart: number;
+    rangeEnd: number;
+  }> = [];
   const comments = sourceCode.getAllComments();
 
   for (const comment of comments) {
@@ -28,6 +42,9 @@ export function findCommentsMatching(
         line: comment.loc?.start.line || 0,
         column: comment.loc?.start.column || 0,
         text,
+        type: comment.type,
+        rangeStart: comment.range![0],
+        rangeEnd: comment.range![1]!,
       });
     }
   }

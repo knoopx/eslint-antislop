@@ -1,15 +1,19 @@
-import { RuleTester } from "@typescript-eslint/rule-tester";
 import { testRules } from "../../../lib/rules/test-utils.js";
-import { sharedHallucinatedImports } from "../../test-utils.js";
+import {
+  createRuleTester,
+  createInvalidHallucinatedImportsTestCases,
+} from "../../test-helpers.js";
 
-const ruleTester = new RuleTester({
-  languageOptions: {
-    ecmaVersion: 2022,
-    sourceType: "module",
-  },
-});
+const ruleTester = createRuleTester();
 
 ruleTester.run("no-hallucinated-imports", testRules.noHallucinatedImports, {
-  valid: sharedHallucinatedImports.valid,
-  invalid: sharedHallucinatedImports.invalid,
+  valid: [
+    {
+      code: `
+        import fs from "fs";
+      `,
+    },
+  ],
+  // @ts-expect-error -- Rule uses message template without meta.messages, so errors use plain `message` not `messageId`
+  invalid: createInvalidHallucinatedImportsTestCases(),
 });

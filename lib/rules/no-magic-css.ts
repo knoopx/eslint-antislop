@@ -19,41 +19,51 @@ function isMagicCssValue(value: string): boolean {
 }
 
 /**
+ * Check if a VariableDeclarator uses `as const` type assertion.
+ */
+function isAsConstDeclaration(
+  declarator: TSESTree.VariableDeclarator,
+): boolean {
+  if (declarator.init?.type !== "TSAsExpression") return false;
+  const typeAnnotation = declarator.init.typeAnnotation;
+  if (typeAnnotation?.type !== "TSTypeReference") return false;
+  const typeName = typeAnnotation.typeName;
+  return typeName.type === "Identifier" && typeName.name === "const";
+}
+
+/**
+ * Check if a VariableDeclarator is a simple literal const (e.g. `const A = "#rrggbb"`).
+ */
+function isSimpleLiteralConst(
+  declarator: TSESTree.VariableDeclarator,
+): boolean {
+  return declarator.init?.type === "Literal";
+}
+
+/**
+ * Check if a VariableDeclaration is declared with `const`.
+ */
+function isConstDeclaration(decl: TSESTree.Node): boolean {
+  return decl.type === "VariableDeclaration" && decl.kind === "const";
+}
+
+/**
  * Checks if a node is inside a const declaration that should be considered
  * a CSS design token (either with 'as const' or simple constant).
  */
 function isInsideValidCssConst(node: TSESTree.Node): boolean {
   let currentNode: TSESTree.Node | null = node;
 
-  // Walk up the parent chain
   while (currentNode) {
     const parent: TSESTree.Node | null | undefined = currentNode.parent;
     if (!parent) break;
 
-    // Check if parent is a VariableDeclarator with const
-    if (parent.type === "VariableDeclarator") {
-      const grandparent = parent.parent;
-      if (grandparent?.type === "VariableDeclaration") {
-        if (grandparent.kind === "const") {
-          // Check if init uses 'as const' type assertion
-          if (parent.init?.type === "TSAsExpression") {
-            // 'as const' creates a TSAsExpression with typeAnnotation as TSTypeReference
-            const typeAnnotation = parent.init.typeAnnotation;
-            if (
-              typeAnnotation?.type === "TSTypeReference" &&
-              typeAnnotation.typeName.type === "Identifier" &&
-              typeAnnotation.typeName.name === "const"
-            ) {
-              return true;
-            }
-          } else {
-            // Simple const declaration without object/array: const A = "#rrggbb"
-            // This is valid because there's no nested magic CSS
-            if (parent.init?.type === "Literal") {
-              return true;
-            }
-          }
-        }
+    if (
+      parent.type === "VariableDeclarator" &&
+      isConstDeclaration(parent.parent ?? {})
+    ) {
+      if (isAsConstDeclaration(parent) || isSimpleLiteralConst(parent)) {
+        return true;
       }
     }
 
@@ -70,7 +80,7 @@ export const noMagicCss: AstRule = {
   category: "style",
   severity: "info",
   languages: ["js", "ts", "jsx", "tsx", "mjs", "cjs"],
-  messageId: "magic-css",
+  messageId: "no-magic-css",
   messageTemplate: "Magic CSS value - extract to design token or const.",
   detect: createTraversalDetect("Literal", (node) => {
     // Only check string literals
@@ -92,6 +102,7 @@ export const noMagicCss: AstRule = {
       line: node.loc?.start.line || 0,
       column: node.loc?.start.column || 0,
       message: "Magic CSS value - extract to design token or const.",
+      messageId: "no-magic-css",
     };
   }),
 };

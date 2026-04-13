@@ -15,7 +15,7 @@ export const noIifeWrapper: AstRule = {
   category: "noise",
   severity: "warn",
   languages: ["js", "ts", "jsx", "tsx"],
-  messageId: "unnecessary-iife",
+  messageId: "no-unnecessary-iife",
   messageTemplate:
     "Unnecessary IIFE wrapper. Consider a top-level async function or direct module execution.",
   detect: createCallExpressionDetect((node) => {
@@ -31,6 +31,10 @@ export const noIifeWrapper: AstRule = {
       return createFinding(
         node,
         "Unnecessary IIFE wrapper - use top-level async or direct execution",
+        1,
+        {
+          messageId: "no-unnecessary-iife",
+        },
       );
     }
     return;

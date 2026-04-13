@@ -9,10 +9,11 @@ export const noGenericErrorMessages: AstRule = {
   category: "error-handling",
   severity: "warn",
   languages: ["js", "ts", "jsx", "tsx", "mjs", "cjs"],
-  messageId: "generic-error",
+  messageId: "no-generic-error",
   messageTemplate:
     "Generic error message. Make it specific about what went wrong.",
   detect: createGenericErrorRule(
     'Generic error message: "{message}". Make it specific about what went wrong.',
+    "no-generic-error",
   ),
 };

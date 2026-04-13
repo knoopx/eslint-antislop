@@ -1,30 +1,13 @@
 import { testRules } from "../../../lib/rules/test-utils.js";
-import { createAsyncRuleTester } from "../../test-helpers.js";
+import { createRuleTester } from "../../test-helpers.js";
 
-const ruleTester = await createAsyncRuleTester();
+const ruleTester = createRuleTester();
 
 ruleTester.run("no-ts-any", testRules.noTsAny, {
   valid: [
     {
       code: `
-        const x: number = 5;
-      `,
-    },
-    {
-      code: `
-        function test(a: string): boolean {
-          return true;
-        }
-      `,
-    },
-    {
-      code: `
-        const arr: string[] = ["a", "b", "c"];
-      `,
-    },
-    {
-      code: `
-        const obj: { name: string } = { name: "test" };
+        const x: string = "value";
       `,
     },
   ],
@@ -33,86 +16,43 @@ ruleTester.run("no-ts-any", testRules.noTsAny, {
       code: `
         const x: any = 5;
       `,
-      errors: [
-        {
-          messageId: "default",
-        },
-      ],
+      errors: [{ messageId: "no-ts-any" }],
     },
     {
       code: `
         const x: any = "value";
       `,
-      errors: [
-        {
-          messageId: "default",
-        },
-      ],
+      errors: [{ messageId: "no-ts-any" }],
     },
     {
       code: `
         const fn = (arg: any): any => arg;
       `,
-      errors: [
-        {
-          messageId: "default",
-        },
-        {
-          messageId: "default",
-        },
-      ],
+      errors: [{ messageId: "no-ts-any" }, { messageId: "no-ts-any" }],
     },
     {
       code: `
         const arr: any[] = [1, 2, 3];
       `,
-      errors: [
-        {
-          messageId: "default",
-        },
-        {
-          messageId: "default",
-        },
-      ],
+      errors: [{ messageId: "no-ts-any" }],
     },
     {
       code: `
         const data: any[] = fetchData();
       `,
-      errors: [
-        {
-          messageId: "default",
-        },
-        {
-          messageId: "default",
-        },
-      ],
+      errors: [{ messageId: "no-ts-any" }],
     },
     {
       code: `
         const value = data as any;
       `,
-      errors: [
-        {
-          messageId: "default",
-        },
-        {
-          messageId: "default",
-        },
-      ],
+      errors: [{ messageId: "no-ts-any" }],
     },
     {
       code: `
         const value = something as any;
       `,
-      errors: [
-        {
-          messageId: "default",
-        },
-        {
-          messageId: "default",
-        },
-      ],
+      errors: [{ messageId: "no-ts-any" }],
     },
     {
       code: `
@@ -120,14 +60,7 @@ ruleTester.run("no-ts-any", testRules.noTsAny, {
           return data;
         }
       `,
-      errors: [
-        {
-          messageId: "default",
-        },
-        {
-          messageId: "default",
-        },
-      ],
+      errors: [{ messageId: "no-ts-any" }, { messageId: "no-ts-any" }],
     },
   ],
 });

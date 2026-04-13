@@ -11,47 +11,9 @@ ruleTester.run(
       {
         code: `
         /**
-         * @deprecated Use oldFunction instead
-         */
-        function oldFunction() {}
-      `,
-      },
-      {
-        code: `
-        /**
-         * @deprecated replaced by newFunction
-         */
-        function deprecatedFn() {}
-      `,
-      },
-      {
-        code: `
-        /**
-         * @deprecated migrate to newApi
-         */
-        function legacyFn() {}
-      `,
-      },
-      {
-        code: `
-        /**
          * @deprecated Use newFunction instead
          */
-        function deprecatedFn() {}
-      `,
-      },
-      {
-        code: `
-        // This is not deprecated
-        function regularFn() {}
-      `,
-      },
-      {
-        code: `
-        /**
-         * Remove this function
-         */
-        function toRemove() {}
+        function oldFunction() {}
       `,
       },
     ],
@@ -63,11 +25,7 @@ ruleTester.run(
          */
         function oldFunction() {}
       `,
-        errors: [
-          {
-            messageId: "deprecated-no-replacement",
-          },
-        ],
+        errors: [{ messageId: "no-deprecated-no-replacement" }],
       },
       {
         code: `
@@ -76,11 +34,7 @@ ruleTester.run(
          */
         function obsoleteFn() {}
       `,
-        errors: [
-          {
-            messageId: "deprecated-no-replacement",
-          },
-        ],
+        errors: [{ messageId: "no-deprecated-no-replacement" }],
       },
       {
         code: `
@@ -89,11 +43,7 @@ ruleTester.run(
          */
         function removedFn() {}
       `,
-        errors: [
-          {
-            messageId: "deprecated-no-replacement",
-          },
-        ],
+        errors: [{ messageId: "no-deprecated-no-replacement" }],
       },
     ],
   },

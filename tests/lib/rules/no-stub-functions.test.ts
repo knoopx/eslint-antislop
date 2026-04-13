@@ -46,11 +46,7 @@ ruleTester.run("no-stub-functions", testRules.noStubFunctions, {
           throw new Error("Not implemented");
         }
       `,
-      errors: [
-        {
-          messageId: "stub-function",
-        },
-      ],
+      errors: [{ messageId: "no-stub-function" }],
     },
     {
       code: `
@@ -58,11 +54,7 @@ ruleTester.run("no-stub-functions", testRules.noStubFunctions, {
           throw new Error("TODO: implement this");
         }
       `,
-      errors: [
-        {
-          messageId: "stub-function",
-        },
-      ],
+      errors: [{ messageId: "no-stub-function" }],
     },
     {
       code: `
@@ -70,11 +62,7 @@ ruleTester.run("no-stub-functions", testRules.noStubFunctions, {
           throw new Error("Stub function here");
         }
       `,
-      errors: [
-        {
-          messageId: "stub-function",
-        },
-      ],
+      errors: [{ messageId: "no-stub-function" }],
     },
     {
       code: `
@@ -82,11 +70,7 @@ ruleTester.run("no-stub-functions", testRules.noStubFunctions, {
           throw new Error("FIXME: implement me");
         }
       `,
-      errors: [
-        {
-          messageId: "stub-function",
-        },
-      ],
+      errors: [{ messageId: "no-stub-function" }],
     },
     {
       code: `
@@ -94,11 +78,7 @@ ruleTester.run("no-stub-functions", testRules.noStubFunctions, {
           throw new Error("Placeholder implementation");
         }
       `,
-      errors: [
-        {
-          messageId: "stub-function",
-        },
-      ],
+      errors: [{ messageId: "no-stub-function" }],
     },
   ],
 });

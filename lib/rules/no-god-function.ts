@@ -9,7 +9,7 @@ export const noGodFunction: AstRule = {
   category: "code-quality",
   severity: "warn",
   languages: ["js", "ts", "jsx", "tsx", "mjs", "cjs"],
-  messageId: "too-many-lines",
+  messageId: "no-too-many-lines",
   messageTemplate:
     "Function exceeds 80 lines. Break it into smaller functions.",
   detect: createGodFunctionRule(

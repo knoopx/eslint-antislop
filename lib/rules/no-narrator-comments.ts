@@ -1,7 +1,7 @@
-import type { AstRule } from "./types.js";
+import type { DynamicAstRule } from "./types.js";
 import { createCommentPatternRule } from "./rule-helpers.js";
 
-export const noNarratorComments: AstRule = {
+export const noNarratorComments: DynamicAstRule = {
   id: "no-narrator-comments",
   name: "No Narrator Comments",
   description:
@@ -9,9 +9,6 @@ export const noNarratorComments: AstRule = {
   category: "ai-tell",
   severity: "info",
   languages: ["js", "ts", "jsx", "tsx", "mjs", "cjs", "py"],
-  messageId: "narrator-comment",
-  messageTemplate:
-    "Narrating what the function does. The name should be self-explanatory.",
   detect: createCommentPatternRule(
     [
       /this\s+(?:function|method|class|module|component|hook|helper|utility)\s+(?:is\s+(?:used\s+)?(?:to|for)|handles?|creates?|returns?|processes?|manages?|implements?|provides?|performs?|does)/i,
@@ -25,6 +22,6 @@ export const noNarratorComments: AstRule = {
       /noqa/i,
       /docstring/i,
     ],
-    "Narrator comment detected.",
+    "Remove narrator comments that restate the code. Comment should explain WHY: the business rationale, edge cases, or constraints. Function names should make WHAT clear. Delete this AI-generated narration.",
   ),
 };

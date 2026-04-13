@@ -8,7 +8,7 @@ export const noObviousComments: AstRule = {
   category: "ai-tell",
   severity: "info",
   languages: ["js", "ts", "jsx", "tsx", "mjs", "cjs"],
-  messageId: "obvious-comment",
+  messageId: "no-obvious-comment",
   messageTemplate:
     "Comment restates what the code does. Remove it or explain WHY instead.",
   detect: createCommentPatternRule(
@@ -21,6 +21,7 @@ export const noObviousComments: AstRule = {
       /@(param|returns|typedef|type)/i,
       /\b(?:TODO|FIXME|NOTE|HACK|BUG|WARN)\b/i,
     ],
-    "Comment restates what the code does.",
+    "Remove this comment that restates the code. Function names and code structure are self-documenting. If a comment is needed, explain WHY: business rationale, edge cases, constraints, or non-obvious decisions. Delete AI-generated obvious comments.",
+    { messageId: "no-obvious-comment" },
   ),
 };

@@ -1,10 +1,10 @@
-import type { AstRule } from "./types.js";
+import type { DynamicAstRule } from "./types.js";
 import { createCommentPatternDetectOld } from "./utils/createRule.js";
 
 const TODO_PATTERN = /TODO\b/i;
 const ISSUE_PATTERNS = [/#\d+/, /https?:\/\//i, /\bissue\b/i, /\bticket\b/i];
 
-export const noTodoWithoutIssue: AstRule = {
+export const noTodoWithoutIssue: DynamicAstRule = {
   id: "no-todo-without-issue",
   name: "No TODO Without Issue",
   description:
@@ -12,8 +12,6 @@ export const noTodoWithoutIssue: AstRule = {
   category: "code-quality",
   severity: "warn",
   languages: ["js", "ts", "jsx", "tsx", "mjs", "cjs", "py"],
-  messageId: "todo-no-issue",
-  messageTemplate: "TODO without issue reference. Add a ticket number or URL.",
   detect: createCommentPatternDetectOld(
     [TODO_PATTERN],
     "TODO without issue reference. Add a ticket number or URL.",

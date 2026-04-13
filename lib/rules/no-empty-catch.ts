@@ -9,7 +9,7 @@ export const noEmptyCatch: AstRule = {
   category: "error-handling",
   severity: "error",
   languages: ["js", "ts", "jsx", "tsx", "mjs", "cjs"],
-  messageId: "empty-catch",
+  messageId: "no-empty-catch",
   messageTemplate: "Empty catch block swallows errors silently.",
   detect: createNodeTypeDetect(["CatchClause"], (node) => {
     const catchClause = node as { body?: TSESTree.Node };
@@ -20,6 +20,7 @@ export const noEmptyCatch: AstRule = {
         line: node.loc.start.line,
         column: node.loc.start.column + 1,
         message: "Empty catch block swallows errors silently.",
+        messageId: "no-empty-catch",
       };
     }
 
@@ -37,6 +38,7 @@ export const noEmptyCatch: AstRule = {
             column: node.loc.start.column + 1,
             message:
               "Catch block only contains a placeholder - errors are still swallowed.",
+            messageId: "no-empty-catch",
           };
         }
       }

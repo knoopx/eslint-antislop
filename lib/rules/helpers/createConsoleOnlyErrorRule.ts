@@ -52,7 +52,10 @@ function analyzeCatchBody(
 /**
  * Creates a detect function for console-only error handling.
  */
-export function createConsoleOnlyErrorRule(message: string): AstRule["detect"] {
+export function createConsoleOnlyErrorRule(
+  message: string,
+  options?: { messageId?: string },
+): AstRule["detect"] {
   return createNodeTypeDetect(["CatchClause"], (node) => {
     const catchClause = node as TSESTree.CatchClause;
     const body = catchClause.body;
@@ -60,7 +63,7 @@ export function createConsoleOnlyErrorRule(message: string): AstRule["detect"] {
 
     const analysis = analyzeCatchBody(body);
     if (analysis?.hasConsole && analysis.onlyConsole) {
-      return [createFinding(node, message)];
+      return [createFinding(node, message, 1, options)];
     }
     return [];
   });

@@ -1,16 +1,36 @@
 {
   "name": "eslint-antislop",
   "version": "1.0.0",
-  "description": "ESLint 10.x preset for preventing AI-generated code slop",
-  "type": "module",
-  "main": "index.ts",
-  "exports": {
-    ".": "./index.ts",
-    "./recommended": "./configs/recommended.ts",
-    "./strict": "./configs/strict.ts",
-    "./typescript": "./configs/typescript.ts",
-    "./react": "./configs/react.ts"
+  "author": "knoopx",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/knoopx/eslint-antislop"
   },
+  "main": "dist/index.js",
+  "dependencies": {
+    "esquery": "^1.7.0"
+  },
+  "devDependencies": {
+    "@types/esquery": "^1.5.4",
+    "@types/node": "^25.6.0",
+    "@typescript-eslint/rule-tester": "^8.58.2",
+    "@typescript-eslint/utils": "^8.58.1",
+    "@typescript-eslint/visitor-keys": "^8.58.2",
+    "eslint": "^10.0.0",
+    "typescript": "^5.0.0",
+    "typescript-eslint": "8.58.1",
+    "vitest": "^4.1.4",
+    "vite": "^8.0.8"
+  },
+  "peerDependencies": {
+    "eslint": "^10.0.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1"
+  },
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "description": "ESLint 10.x preset for preventing AI-generated code slop",
   "keywords": [
     "eslint",
     "eslint-config",
@@ -19,37 +39,16 @@
     "code-quality",
     "linting"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/knoopx/eslint-antislop"
-  },
-  "author": "knoopx",
   "license": "MIT",
-  "peerDependencies": {
-    "eslint": "^10.0.0",
-    "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-react-hooks": "^7.0.1"
+  "overrides": {
+    "@typescript-eslint/utils": "$@typescript-eslint/utils"
   },
   "scripts": {
     "lint": "bunx eslint .",
     "test": "vitest run",
     "test:watch": "vitest",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "build": "vite build"
   },
-  "devDependencies": {
-    "@typescript-eslint/parser": "^8.58.2",
-    "@typescript-eslint/visitor-keys": "^8.58.2",
-    "@types/esquery": "^1.5.4",
-    "@types/node": "^25.6.0",
-    "@typescript-eslint/rule-tester": "^8.58.2",
-    "@typescript-eslint/utils": "^8.58.1",
-    "eslint": "^10.0.0",
-    "esquery": "^1.7.0",
-    "typescript": "^5.0.0",
-    "typescript-eslint": "8.58.1",
-    "vitest": "^4.1.4"
-  },
-  "overrides": {
-    "@typescript-eslint/utils": "$@typescript-eslint/utils"
-  }
+  "type": "module"
 }

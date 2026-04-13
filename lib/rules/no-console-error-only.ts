@@ -14,5 +14,6 @@ export const noConsoleErrorOnly: AstRule = {
     "Catch block only logs the error without rethrowing or handling it.",
   detect: createConsoleOnlyErrorRule(
     "Catch block only logs the error. Consider rethrowing or returning an error.",
+    { messageId: "no-console-error-only" },
   ),
 };

@@ -35,66 +35,60 @@ ruleTester.run("no-hedging-comments", testRules.noHedgingComments, {
         // This should work fine
         function test() {}
       `,
-      errors: [
-        {
-          messageId: "hedging-comment",
-        },
-      ],
+      output: `
+        function test() {}
+      `,
+      errors: [{ message: /Delete uncertain hedging comment/ }],
     },
     {
       code: `
         // Might not be the best approach
         function suboptimal() {}
       `,
-      errors: [
-        {
-          messageId: "hedging-comment",
-        },
-      ],
+      output: `
+        function suboptimal() {}
+      `,
+      errors: [{ message: /Delete uncertain hedging comment/ }],
     },
     {
       code: `
         // Hopefully this works
         const data = fetchData();
       `,
-      errors: [
-        {
-          messageId: "hedging-comment",
-        },
-      ],
+      output: `
+        const data = fetchData();
+      `,
+      errors: [{ message: /Delete uncertain hedging comment/ }],
     },
     {
       code: `
         // Not sure if this is correct
         const result = process(input);
       `,
-      errors: [
-        {
-          messageId: "hedging-comment",
-        },
-      ],
+      output: `
+        const result = process(input);
+      `,
+      errors: [{ message: /Delete uncertain hedging comment/ }],
     },
     {
       code: `
         // This probably isn't the best way
         const x = compute();
       `,
-      errors: [
-        {
-          messageId: "hedging-comment",
-        },
-      ],
+      output: `
+        const x = compute();
+      `,
+      errors: [{ message: /Delete uncertain hedging comment/ }],
     },
     {
       code: `
         // I'm not sure if this is right
         function questionable() {}
       `,
-      errors: [
-        {
-          messageId: "hedging-comment",
-        },
-      ],
+      output: `
+        function questionable() {}
+      `,
+      errors: [{ message: /Delete uncertain hedging comment/ }],
     },
   ],
-});
+} as unknown as Parameters<typeof ruleTester.run>[2]);

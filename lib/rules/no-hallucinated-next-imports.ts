@@ -12,7 +12,7 @@ export const noHallucinatedNextImports: AstRule = {
   category: "hallucinated-imports",
   severity: "error",
   languages: ["js", "ts", "jsx", "tsx"],
-  messageId: "hallucinated-next-import",
+  messageId: "no-hallucinated-next-import",
   messageTemplate: "{api} is a Next.js page export, not a React import.",
   detect: createHallucinatedImportRule(
     "react",

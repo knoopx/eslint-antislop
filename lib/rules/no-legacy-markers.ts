@@ -10,7 +10,7 @@ export const noLegacyMarkers: AstRule = {
   category: "technical-debt",
   severity: "warn",
   languages: ["js", "ts", "jsx", "tsx", "mjs", "cjs", "py"],
-  messageId: "legacy-marker",
+  messageId: "no-legacy-marker",
   messageTemplate:
     "Legacy code marker found. Remove the old code or complete the migration.",
   detect(
@@ -36,7 +36,9 @@ export const noLegacyMarkers: AstRule = {
       (f) => ({
         line: f.line,
         column: f.column,
-        message: "Legacy code marker found",
+        message:
+          "Legacy code marker indicates abandoned technical debt. Marking code deprecated is preservation, not removal. Either complete the migration and delete the old code, or delete it now — don't leave markers that suggest the debt will be addressed but aren't actually being fixed.",
+        messageId: "no-legacy-marker",
       }),
     );
   },

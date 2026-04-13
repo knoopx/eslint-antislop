@@ -3,7 +3,7 @@ import type { TSESTree } from "@typescript-eslint/utils";
 import { createTraversalDetect } from "../utils/createRule.js";
 
 /**
- * Creates a finding for a hallucinated package import
+ * Creates a finding for a hallucinated package import.
  */
 function createHallucinatedPackageFinding(
   node: TSESTree.Node,
@@ -56,14 +56,18 @@ export function createHallucinatedPackageRule(
     if (isValidImportDeclaration(node)) {
       const source = node.source.value;
       if (hallucinatedSet.has(source)) {
-        return [createHallucinatedPackageFinding(node, source, messageTemplate)];
+        return [
+          createHallucinatedPackageFinding(node, source, messageTemplate),
+        ];
       }
     } else if (isValidRequireCall(node)) {
       const firstArg = node.arguments[0];
       if (firstArg.type === "Literal" && typeof firstArg.value === "string") {
         const source = firstArg.value;
         if (hallucinatedSet.has(source)) {
-          return [createHallucinatedPackageFinding(node, source, messageTemplate)];
+          return [
+            createHallucinatedPackageFinding(node, source, messageTemplate),
+          ];
         }
       }
     }

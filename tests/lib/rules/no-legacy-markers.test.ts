@@ -48,66 +48,42 @@ ruleTester.run("no-legacy-markers", testRules.noLegacyMarkers, {
         // legacy code that needs attention
         function oldFunc() {}
       `,
-      errors: [
-        {
-          messageId: "legacy-marker",
-        },
-      ],
+      errors: [{ messageId: "no-legacy-marker" }],
     },
     {
       code: `
         // Deprecated but not replaced
         function oldMethod() {}
       `,
-      errors: [
-        {
-          messageId: "legacy-marker",
-        },
-      ],
+      errors: [{ messageId: "no-legacy-marker" }],
     },
     {
       code: `
         // obsolete function
         function deprecatedFunc() {}
       `,
-      errors: [
-        {
-          messageId: "legacy-marker",
-        },
-      ],
+      errors: [{ messageId: "no-legacy-marker" }],
     },
     {
       code: `
         // outdated implementation
         function oldCode() {}
       `,
-      errors: [
-        {
-          messageId: "legacy-marker",
-        },
-      ],
+      errors: [{ messageId: "no-legacy-marker" }],
     },
     {
       code: `
         // old code here
         function legacyFunc() {}
       `,
-      errors: [
-        {
-          messageId: "legacy-marker",
-        },
-      ],
+      errors: [{ messageId: "no-legacy-marker" }],
     },
     {
       code: `
         // old version of this
         function legacyCode() {}
       `,
-      errors: [
-        {
-          messageId: "legacy-marker",
-        },
-      ],
+      errors: [{ messageId: "no-legacy-marker" }],
     },
   ],
 });

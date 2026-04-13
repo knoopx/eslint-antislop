@@ -8,7 +8,7 @@ export const noFallbackDefaults: AstRule = {
   category: "error-handling",
   severity: "warn",
   languages: ["js", "ts", "jsx", "tsx", "mjs", "cjs"],
-  messageId: "fallback-default",
+  messageId: "no-fallback-default",
   messageTemplate:
     "Silent fallback on required data. Fail fast instead of using defaults.",
   detect(context: ESLintRule.RuleContext): AstFinding[] {

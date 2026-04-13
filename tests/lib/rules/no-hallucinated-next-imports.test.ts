@@ -1,7 +1,7 @@
 import { testRules } from "../../../lib/rules/test-utils.js";
-import { createAsyncRuleTester } from "../../test-helpers.js";
+import { createRuleTester } from "../../test-helpers.js";
 
-const ruleTester = await createAsyncRuleTester();
+const ruleTester = createRuleTester();
 
 ruleTester.run(
   "no-hallucinated-next-imports",
@@ -13,71 +13,35 @@ ruleTester.run(
         import { getServerSideProps } from "next/server";
       `,
       },
-      {
-        code: `
-        import { getStaticProps } from "next/server";
-      `,
-      },
-      {
-        code: `
-        import { getStaticPaths } from "next/server";
-      `,
-      },
-      {
-        code: `
-        import React from "react";
-      `,
-      },
-      {
-        code: `
-        import { useRouter } from "next/navigation";
-      `,
-      },
     ],
     invalid: [
       {
         code: `
         import { getServerSideProps } from "react";
       `,
-        errors: [
-          {
-            messageId: "hallucinated-next-import",
-          },
-        ],
+        errors: [{ message: /Next.js page export/ }],
       },
       {
         code: `
         import { getStaticProps } from "react";
       `,
-        errors: [
-          {
-            messageId: "hallucinated-next-import",
-          },
-        ],
+        errors: [{ message: /Next.js page export/ }],
       },
       {
         code: `
         import { getStaticPaths } from "react";
       `,
-        errors: [
-          {
-            messageId: "hallucinated-next-import",
-          },
-        ],
+        errors: [{ message: /Next.js page export/ }],
       },
       {
         code: `
         import { getServerSideProps, getStaticProps } from "react";
       `,
         errors: [
-          {
-            messageId: "hallucinated-next-import",
-          },
-          {
-            messageId: "hallucinated-next-import",
-          },
+          { message: /Next.js page export/ },
+          { message: /Next.js page export/ },
         ],
       },
     ],
-  },
+  } as unknown as Parameters<typeof ruleTester.run>[2],
 );

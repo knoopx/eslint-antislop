@@ -63,7 +63,8 @@ function checkThrowStatement(node: TSESTree.ThrowStatement): AstFinding | null {
       return {
         line: node.loc.start.line,
         column: node.loc.start.column + 1,
-        message: "Stub function detected. Implement it or remove it.",
+        message: `Delete stub error: '${errorMsg}'. Ship code with unimplemented throws creates runtime failures. Either implement the full functionality, remove the dead code path, or replace with a proper TODO that references an issue tracker. Remove AI-generated stubs.`,
+        messageId: "no-stub-function",
       };
     }
   }
@@ -79,7 +80,7 @@ export const noStubFunctions: AstRule = {
   category: "ai-tell",
   severity: "warn",
   languages: ["js", "ts", "jsx", "tsx", "mjs", "cjs"],
-  messageId: "stub-function",
+  messageId: "no-stub-function",
   messageTemplate: "Stub function detected. Implement it or remove it.",
   detect(context: ESLintRule.RuleContext): AstFinding[] {
     const findings: AstFinding[] = [];

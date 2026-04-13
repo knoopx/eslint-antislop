@@ -20,14 +20,17 @@ function hasLeakingProperty(arg: TSESTree.Node): boolean {
 /**
  * Creates a detect function for error info leaks in HTTP responses.
  */
-export function createErrorInfoLeakRule(message: string): AstRule["detect"] {
+export function createErrorInfoLeakRule(
+  message: string,
+  options?: { messageId?: string },
+): AstRule["detect"] {
   return createCallExpressionDetect((node) => {
     if (!isMemberCallExpression(node)) return [];
     if (!RESPONSE_METHODS.has(node.callee.property.name)) return [];
 
     for (const arg of node.arguments || []) {
       if (hasLeakingProperty(arg)) {
-        return [createFinding(node, message)];
+        return [createFinding(node, message, 1, options)];
       }
     }
     return [];

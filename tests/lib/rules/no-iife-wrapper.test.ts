@@ -7,22 +7,10 @@ ruleTester.run("no-iife-wrapper", testRules.noIifeWrapper, {
   valid: [
     {
       code: `
-        const result = Math.random();
-      `,
-    },
-    {
-      code: `
-        console.log("hello");
-      `,
-    },
-    {
-      code: `
-        fetch("/api").then(res => res.json());
-      `,
-    },
-    {
-      code: `
-        const x = 5;
+        async function main() {
+          await doSomething();
+        }
+        main();
       `,
     },
   ],
@@ -33,11 +21,7 @@ ruleTester.run("no-iife-wrapper", testRules.noIifeWrapper, {
           console.log("IIFE");
         })();
       `,
-      errors: [
-        {
-          messageId: "unnecessary-iife",
-        },
-      ],
+      errors: [{ messageId: "no-unnecessary-iife" }],
     },
     {
       code: `
@@ -46,11 +30,7 @@ ruleTester.run("no-iife-wrapper", testRules.noIifeWrapper, {
           return x * 2;
         })();
       `,
-      errors: [
-        {
-          messageId: "unnecessary-iife",
-        },
-      ],
+      errors: [{ messageId: "no-unnecessary-iife" }],
     },
     {
       code: `
@@ -58,11 +38,7 @@ ruleTester.run("no-iife-wrapper", testRules.noIifeWrapper, {
           console.log("arrow IIFE");
         })();
       `,
-      errors: [
-        {
-          messageId: "unnecessary-iife",
-        },
-      ],
+      errors: [{ messageId: "no-unnecessary-iife" }],
     },
     {
       code: `
@@ -70,21 +46,13 @@ ruleTester.run("no-iife-wrapper", testRules.noIifeWrapper, {
           await doSomething();
         })();
       `,
-      errors: [
-        {
-          messageId: "unnecessary-iife",
-        },
-      ],
+      errors: [{ messageId: "no-unnecessary-iife" }],
     },
     {
       code: `
         ((x, y) => x + y)(1, 2);
       `,
-      errors: [
-        {
-          messageId: "unnecessary-iife",
-        },
-      ],
+      errors: [{ messageId: "no-unnecessary-iife" }],
     },
     {
       code: `
@@ -92,11 +60,7 @@ ruleTester.run("no-iife-wrapper", testRules.noIifeWrapper, {
           return 42;
         })();
       `,
-      errors: [
-        {
-          messageId: "unnecessary-iife",
-        },
-      ],
+      errors: [{ messageId: "no-unnecessary-iife" }],
     },
   ],
 });

@@ -1,12 +1,14 @@
 import type { ESLint, Rule } from "eslint";
 import { RULE_REGISTRY } from "./rules/registry.js";
 import * as Rules from "./rules/base.js";
-import type { AstRule } from "./rules/types.js";
+import type { AstRule, DynamicAstRule } from "./rules/types.js";
 
 /**
- * Converts an AST-based rule to an ESLint rule definition
+ * Converts an AST-based rule to an ESLint rule definition.
  */
-function createRuleDefinition(rule: AstRule): Rule.RuleModule {
+function createRuleDefinition(rule: AstRule | DynamicAstRule): Rule.RuleModule {
+  const isDynamic = !("messageTemplate" in rule);
+
   return {
     meta: {
       type: "problem",
@@ -14,9 +16,8 @@ function createRuleDefinition(rule: AstRule): Rule.RuleModule {
         description: rule.description,
       },
       schema: [],
-      messages: {
-        default: rule.messageTemplate,
-      },
+      fixable: "code" as const,
+      messages: isDynamic ? {} : { default: (rule as AstRule).messageTemplate },
     },
     create(context: Rule.RuleContext) {
       const findings = rule.detect(context);
@@ -28,6 +29,7 @@ function createRuleDefinition(rule: AstRule): Rule.RuleModule {
               column: finding.column,
             },
             message: finding.message,
+            fix: finding.fix,
           });
         }
       }
@@ -42,7 +44,7 @@ function createRuleDefinition(rule: AstRule): Rule.RuleModule {
 function buildRulesObject(): Record<string, Rule.RuleModule> {
   const rules: Record<string, Rule.RuleModule> = {};
   for (const { id, name } of RULE_REGISTRY) {
-    const rule = (Rules as Record<string, AstRule>)[name];
+    const rule = (Rules as Record<string, AstRule | DynamicAstRule>)[name];
     if (rule) {
       rules[id] = createRuleDefinition(rule);
     }

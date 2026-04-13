@@ -1,15 +1,12 @@
-import type { AstRule, AstFinding } from "./types.js";
+import type { DynamicAstRule, AstFinding } from "./types.js";
 import type { Rule as ESLintRule } from "eslint";
-export const noOverconfidentComments: AstRule = {
+export const noOverconfidentComments: DynamicAstRule = {
   id: "no-overconfident-comments",
   name: "No Overconfident Comments",
   description: "Overconfident comments indicating false certainty.",
   category: "noise",
   severity: "warn",
   languages: ["js", "ts", "jsx", "tsx", "mjs", "cjs", "py"],
-  messageId: "overconfident-comment",
-  messageTemplate:
-    "Overconfident comment - avoid false certainty claims.",
   detect(context: ESLintRule.RuleContext): AstFinding[] {
     const findings: AstFinding[] = [];
     const sourceCode = context.sourceCode;
@@ -25,7 +22,15 @@ export const noOverconfidentComments: AstRule = {
         findings.push({
           line: comment.loc?.start.line || 0,
           column: comment.loc?.start.column || 0 + 1,
-          message: "Overconfident comment detected",
+          message: `Delete overconfident comment using: '${overconfidentPattern.exec(text)?.[0]}'. Remove words like "obviously", "clearly", "simply", "definitely", "just", "of course". These create false certainty. Comments should be accurate and maintainable. Delete AI-generated absolute claims.`,
+          fix(fixer) {
+            const text = context.sourceCode.getText();
+            const cs = comment.range![0];
+            const lineStart = text.lastIndexOf("\n", cs - 1) + 1;
+            const lineEnd = text.indexOf("\n", cs);
+            const end = lineEnd === -1 ? text.length : lineEnd + 1;
+            return fixer.removeRange([lineStart, end]);
+          },
         });
       }
     }

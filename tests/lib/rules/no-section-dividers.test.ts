@@ -39,12 +39,8 @@ ruleTester.run("no-section-dividers", testRules.noSectionDividers, {
         function section1() {}
       `,
       errors: [
-        {
-          messageId: "section-divider",
-        },
-        {
-          messageId: "section-divider",
-        },
+        { messageId: "no-section-divider" },
+        { messageId: "no-section-divider" },
       ],
     },
     {
@@ -52,48 +48,32 @@ ruleTester.run("no-section-dividers", testRules.noSectionDividers, {
         // --------
         const x = 5;
       `,
-      errors: [
-        {
-          messageId: "section-divider",
-        },
-      ],
+      errors: [{ messageId: "no-section-divider" }],
     },
     {
       code: `
         // ~~~~~~~
         const y = 10;
       `,
-      errors: [
-        {
-          messageId: "section-divider",
-        },
-      ],
+      errors: [{ messageId: "no-section-divider" }],
     },
     {
       code: `
         // ***********
         function section2() {}
       `,
-      errors: [
-        {
-          messageId: "section-divider",
-        },
-      ],
+      errors: [{ messageId: "no-section-divider" }],
     },
     {
       code: `
-        // ====
+        // ==== 
         // More section
         // ====
         const z = 15;
       `,
       errors: [
-        {
-          messageId: "section-divider",
-        },
-        {
-          messageId: "section-divider",
-        },
+        { messageId: "no-section-divider" },
+        { messageId: "no-section-divider" },
       ],
     },
     {
@@ -104,12 +84,20 @@ ruleTester.run("no-section-dividers", testRules.noSectionDividers, {
         const b = 2;
       `,
       errors: [
-        {
-          messageId: "section-divider",
-        },
-        {
-          messageId: "section-divider",
-        },
+        { messageId: "no-section-divider" },
+        { messageId: "no-section-divider" },
+      ],
+    },
+    {
+      code: `
+        // ===========================================================================
+        // SIMPLICITY
+        // ===========================================================================
+        function section() {}
+      `,
+      errors: [
+        { messageId: "no-section-divider" },
+        { messageId: "no-section-divider" },
       ],
     },
   ],

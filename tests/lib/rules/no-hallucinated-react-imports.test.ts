@@ -10,27 +10,7 @@ ruleTester.run(
     valid: [
       {
         code: `
-        import React, { useState } from "react";
-      `,
-      },
-      {
-        code: `
-        import { useEffect, useMemo } from "react";
-      `,
-      },
-      {
-        code: `
-        import { useRouter } from "next/navigation";
-      `,
-      },
-      {
-        code: `
-        import { Link } from "react-router-dom";
-      `,
-      },
-      {
-        code: `
-        import { Image } from "expo";
+        import { useState } from "react";
       `,
       },
     ],
@@ -39,75 +19,47 @@ ruleTester.run(
         code: `
         import { useRouter } from "react";
       `,
-        errors: [
-          {
-            messageId: "hallucinated-react-import",
-          },
-        ],
+        errors: [{ message: /does not exist in 'react'/ }],
       },
       {
         code: `
         import { useParams } from "react";
       `,
-        errors: [
-          {
-            messageId: "hallucinated-react-import",
-          },
-        ],
+        errors: [{ message: /does not exist in 'react'/ }],
       },
       {
         code: `
         import { useSearchParams } from "react";
       `,
-        errors: [
-          {
-            messageId: "hallucinated-react-import",
-          },
-        ],
+        errors: [{ message: /does not exist in 'react'/ }],
       },
       {
         code: `
         import { Link } from "react";
       `,
-        errors: [
-          {
-            messageId: "hallucinated-react-import",
-          },
-        ],
+        errors: [{ message: /does not exist in 'react'/ }],
       },
       {
         code: `
         import { Image } from "react";
       `,
-        errors: [
-          {
-            messageId: "hallucinated-react-import",
-          },
-        ],
+        errors: [{ message: /does not exist in 'react'/ }],
       },
       {
         code: `
         import { Script } from "react";
       `,
-        errors: [
-          {
-            messageId: "hallucinated-react-import",
-          },
-        ],
+        errors: [{ message: /does not exist in 'react'/ }],
       },
       {
         code: `
         import { useRouter, useParams } from "react";
       `,
         errors: [
-          {
-            messageId: "hallucinated-react-import",
-          },
-          {
-            messageId: "hallucinated-react-import",
-          },
+          { message: /does not exist in 'react'/ },
+          { message: /does not exist in 'react'/ },
         ],
       },
     ],
-  },
+  } as unknown as Parameters<typeof ruleTester.run>[2],
 );

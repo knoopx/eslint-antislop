@@ -9,10 +9,11 @@ export const noErrorInfoLeak: AstRule = {
   category: "framework",
   severity: "error",
   languages: ["js", "ts", "jsx", "tsx", "mjs", "cjs"],
-  messageId: "error-info-leak",
+  messageId: "no-error-info-leak",
   messageTemplate:
     "Error internals leaked to HTTP response. Return a generic error message instead.",
   detect: createErrorInfoLeakRule(
     "Error internals may be leaked to HTTP response",
+    { messageId: "no-error-info-leak" },
   ),
 };

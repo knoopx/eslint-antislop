@@ -3,7 +3,19 @@ import { createRuleTester } from "../../test-helpers.js";
 
 const ruleTester = createRuleTester();
 
-const longCode = `
+ruleTester.run("no-god-function", testRules.noGodFunction, {
+  valid: [
+    {
+      code: `
+        function shortFunction() {
+          return compute();
+        }
+      `,
+    },
+  ],
+  invalid: [
+    {
+      code: `
 function godFunction() {
   const a = 1;
   const b = 2;
@@ -89,28 +101,8 @@ function godFunction() {
   const dddd = 82;
   return aaaa;
 }
-`;
-
-const shortCode = `
-function smallFunction() {
-  return 42;
-}
-`;
-
-ruleTester.run("no-god-function", testRules.noGodFunction, {
-  valid: [
-    {
-      code: shortCode,
-    },
-  ],
-  invalid: [
-    {
-      code: longCode,
-      errors: [
-        {
-          messageId: "too-many-lines",
-        },
-      ],
+      `,
+      errors: [{ messageId: "no-too-many-lines" }],
     },
   ],
 });

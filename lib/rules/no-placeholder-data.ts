@@ -29,14 +29,17 @@ export const noPlaceholderData: AstRule = {
   category: "code-quality",
   severity: "warn",
   languages: ["js", "ts", "jsx", "tsx", "mjs", "cjs"],
-  messageId: "placeholder-data",
+  messageId: "no-placeholder-data",
   messageTemplate:
     "Placeholder data detected. Replace with actual values or remove.",
   detect: createPatternMatchDetect(
     PLACEHOLDER_PATTERNS,
     ANTI_PATTERNS,
     (_value, node) => {
-      return createFinding(node, "Placeholder data detected. Replace with actual values.");
+      return createFinding(
+        node,
+        "Placeholder data detected. Replace with actual values.",
+      );
     },
   ),
 };

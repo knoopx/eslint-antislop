@@ -3,7 +3,6 @@ export { createHallucinatedImportRule } from "./helpers/createHallucinatedImport
 export { createDebugStatementRule } from "./helpers/createDebugStatementRule.js";
 export { createErrorInfoLeakRule } from "./helpers/createErrorInfoLeakRule.js";
 export { createGenericErrorRule } from "./helpers/createGenericErrorRule.js";
-export { createExpressUnhandledRule } from "./helpers/createExpressUnhandledRule.js";
 export { createHallucinatedPackageRule } from "./helpers/createHallucinatedPackageRule.js";
 export { createCommentPatternRule } from "./helpers/createCommentPatternRule.js";
 export { createGodFunctionRule } from "./helpers/createGodFunctionRule.js";

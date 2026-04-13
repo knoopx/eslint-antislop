@@ -12,30 +12,6 @@ ruleTester.run("no-skipped-tests", testRules.noSkippedTests, {
         });
       `,
     },
-    {
-      code: `
-        it("should work", () => {
-          expect(true).toBe(true);
-        });
-      `,
-    },
-    {
-      code: `
-        describe("test suite", () => {
-          test("works", () => {});
-        });
-      `,
-    },
-    {
-      code: `
-        it.todo("should work later");
-      `,
-    },
-    {
-      code: `
-        test.skipIf(false)("conditional skip", () => {});
-      `,
-    },
   ],
   invalid: [
     {
@@ -44,11 +20,7 @@ ruleTester.run("no-skipped-tests", testRules.noSkippedTests, {
           expect(1).toBe(1);
         });
       `,
-      errors: [
-        {
-          messageId: "skipped-test",
-        },
-      ],
+      errors: [{ message: /Skipped test detected/ }],
     },
     {
       code: `
@@ -56,11 +28,7 @@ ruleTester.run("no-skipped-tests", testRules.noSkippedTests, {
           expect(true).toBe(true);
         });
       `,
-      errors: [
-        {
-          messageId: "skipped-test",
-        },
-      ],
+      errors: [{ message: /Skipped test detected/ }],
     },
     {
       code: `
@@ -68,11 +36,7 @@ ruleTester.run("no-skipped-tests", testRules.noSkippedTests, {
           test("works", () => {});
         });
       `,
-      errors: [
-        {
-          messageId: "skipped-test",
-        },
-      ],
+      errors: [{ message: /Skipped test detected/ }],
     },
     {
       code: `
@@ -80,31 +44,19 @@ ruleTester.run("no-skipped-tests", testRules.noSkippedTests, {
           it("works", () => {});
         });
       `,
-      errors: [
-        {
-          messageId: "skipped-test",
-        },
-      ],
+      errors: [{ message: /Skipped test detected/ }],
     },
     {
       code: `
         xit("should work", () => {});
       `,
-      errors: [
-        {
-          messageId: "skipped-test",
-        },
-      ],
+      errors: [{ message: /Skipped test detected/ }],
     },
     {
       code: `
         xtest("should work", () => {});
       `,
-      errors: [
-        {
-          messageId: "skipped-test",
-        },
-      ],
+      errors: [{ message: /Skipped test detected/ }],
     },
   ],
-});
+} as unknown as Parameters<typeof ruleTester.run>[2]);

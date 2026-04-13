@@ -53,6 +53,7 @@ function checkVariableDeclarator(
       line: node.loc.start.line,
       column: node.loc.start.column + 1,
       message: `Potential hardcoded secret in variable '${varName}'`,
+      messageId: "no-hardcoded-secret",
     };
   }
 
@@ -81,6 +82,7 @@ function checkProperty(node: TSESTree.Property): AstFinding | null {
       line: node.loc.start.line,
       column: node.loc.start.column + 1,
       message: `Potential hardcoded secret in property '${keyName}'`,
+      messageId: "no-hardcoded-secret",
     };
   }
 
@@ -95,7 +97,7 @@ export const noHardcodedSecrets: AstRule = {
   category: "security",
   severity: "error",
   languages: ["js", "ts", "jsx", "tsx", "mjs", "cjs", "py"],
-  messageId: "hardcoded-secret",
+  messageId: "no-hardcoded-secret",
   messageTemplate:
     "Hardcoded secret detected. Use environment variables instead.",
   detect(context: ESLintRule.RuleContext): AstFinding[] {

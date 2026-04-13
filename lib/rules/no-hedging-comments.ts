@@ -1,8 +1,8 @@
-import type { AstRule, AstFinding } from "./types.js";
+import type { DynamicAstRule, AstFinding } from "./types.js";
 import type { Rule as ESLintRule } from "eslint";
 import { findCommentsMatching } from "./utils.js";
 
-export const noHedgingComments: AstRule = {
+export const noHedgingComments: DynamicAstRule = {
   id: "no-hedging-comments",
   name: "No Hedging Comments",
   description:
@@ -10,9 +10,6 @@ export const noHedgingComments: AstRule = {
   category: "ai-tell",
   severity: "info",
   languages: ["js", "ts", "jsx", "tsx", "mjs", "cjs", "py"],
-  messageId: "hedging-comment",
-  messageTemplate:
-    "Hedging comment detected. Either fix the uncertainty or remove the comment.",
   detect(context: ESLintRule.RuleContext): AstFinding[] {
     const hedgingPatterns = [
       /should\s+work/i,
@@ -34,7 +31,14 @@ export const noHedgingComments: AstRule = {
     ).map((m) => ({
       line: m.line,
       column: m.column + 1,
-      message: `Hedging comment detected: "${m.text}"`,
+      message: `Delete uncertain hedging comment: "${m.text}". Remove hedging phrases like "should work", "might not", "hopefully", "not sure if". If code has uncertainty, fix the code or add a TODO with a concrete issue reference. Remove AI-generated uncertainty markers.`,
+      fix(fixer) {
+        const text = context.sourceCode.getText();
+        const lineStart = text.lastIndexOf("\n", m.rangeStart - 1) + 1;
+        const lineEnd = text.indexOf("\n", m.rangeEnd);
+        const end = lineEnd === -1 ? text.length : lineEnd + 1;
+        return fixer.removeRange([lineStart, end]);
+      },
     }));
   },
 };

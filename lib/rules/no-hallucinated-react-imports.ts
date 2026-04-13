@@ -12,7 +12,7 @@ export const noHallucinatedReactImports: AstRule = {
   category: "hallucinated-imports",
   severity: "error",
   languages: ["js", "ts", "jsx", "tsx"],
-  messageId: "hallucinated-react-import",
+  messageId: "no-hallucinated-react-import",
   messageTemplate:
     "{api} does not exist in 'react'. Import from the correct package.",
   detect: createHallucinatedImportRule(

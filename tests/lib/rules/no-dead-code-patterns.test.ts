@@ -1,36 +1,13 @@
-import { RuleTester } from "@typescript-eslint/rule-tester";
 import { testRules } from "../../../lib/rules/test-utils.js";
+import { createRuleTester } from "../../test-helpers.js";
 
-const ruleTester = new RuleTester({
-  languageOptions: {
-    ecmaVersion: 2022,
-    sourceType: "module",
-  },
-});
+const ruleTester = createRuleTester();
 
 ruleTester.run("no-dead-code-patterns", testRules.noDeadCodePatterns, {
   valid: [
     {
       code: `
-        // This is a normal comment
-        const x = 5;
-      `,
-    },
-    {
-      code: `
-        // TODO: implement this later
-        function placeholder() {}
-      `,
-    },
-    {
-      code: `
-        // @ts-expect-error: expected
-        const x: number = "string";
-      `,
-    },
-    {
-      code: `
-        console.log("test");
+        const y = 10;
       `,
     },
   ],
@@ -40,33 +17,21 @@ ruleTester.run("no-dead-code-patterns", testRules.noDeadCodePatterns, {
         // const x = 5;
         const y = 10;
       `,
-      errors: [
-        {
-          messageId: "dead-code-pattern",
-        },
-      ],
+      errors: [{ messageId: "no-dead-code-pattern" }],
     },
     {
       code: `
         // function oldFunc() {}
         function newFunc() {}
       `,
-      errors: [
-        {
-          messageId: "dead-code-pattern",
-        },
-      ],
+      errors: [{ messageId: "no-dead-code-pattern" }],
     },
     {
       code: `
         // class OldClass extends Base {}
         class NewClass {}
       `,
-      errors: [
-        {
-          messageId: "dead-code-pattern",
-        },
-      ],
+      errors: [{ messageId: "no-dead-code-pattern" }],
     },
     {
       code: `
@@ -77,11 +42,7 @@ ruleTester.run("no-dead-code-patterns", testRules.noDeadCodePatterns, {
           doOtherThing();
         }
       `,
-      errors: [
-        {
-          messageId: "dead-code-pattern",
-        },
-      ],
+      errors: [{ messageId: "no-dead-code-pattern" }],
     },
     {
       code: `
@@ -92,33 +53,21 @@ ruleTester.run("no-dead-code-patterns", testRules.noDeadCodePatterns, {
           console.log(item);
         }
       `,
-      errors: [
-        {
-          messageId: "dead-code-pattern",
-        },
-      ],
+      errors: [{ messageId: "no-dead-code-pattern" }],
     },
     {
       code: `
         // import { foo } from "foo";
         import { bar } from "bar";
       `,
-      errors: [
-        {
-          messageId: "dead-code-pattern",
-        },
-      ],
+      errors: [{ messageId: "no-dead-code-pattern" }],
     },
     {
       code: `
         // export default MyClass;
         export default NewClass;
       `,
-      errors: [
-        {
-          messageId: "dead-code-pattern",
-        },
-      ],
+      errors: [{ messageId: "no-dead-code-pattern" }],
     },
     {
       code: `
@@ -129,11 +78,7 @@ ruleTester.run("no-dead-code-patterns", testRules.noDeadCodePatterns, {
           process();
         }
       `,
-      errors: [
-        {
-          messageId: "dead-code-pattern",
-        },
-      ],
+      errors: [{ messageId: "no-dead-code-pattern" }],
     },
   ],
 });

@@ -27,7 +27,6 @@ export const HALLUCINATED_JS_PACKAGES = [
   "react-native-webview",
   "lodash-es",
   "axios-minified",
-  "express-async-handler",
   "next-seo-plugin",
   "typescript-utilities",
   "eslint-config-prettier-standard",

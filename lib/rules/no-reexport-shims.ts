@@ -32,9 +32,7 @@ function hasOnlyReexports(astBody: TSESTree.Node[]): {
 /**
  * Generate findings for re-export statements
  */
-function generateFindings(
-  exportNodes: TSESTree.Node[],
-): AstFinding[] {
+function generateFindings(exportNodes: TSESTree.Node[]): AstFinding[] {
   const findings: AstFinding[] = [];
 
   for (const node of exportNodes) {
@@ -46,6 +44,7 @@ function generateFindings(
       column: node.loc.start.column + 1,
       message:
         "Re-export shim adds indirection. Import directly from the source module.",
+      messageId: "no-reexport-shim",
     });
   }
 
@@ -60,7 +59,7 @@ export const noReexportShims: AstRule = {
   category: "simplicity",
   severity: "warn",
   languages: ["js", "ts", "jsx", "tsx", "mjs", "cjs"],
-  messageId: "reexport-shim",
+  messageId: "no-reexport-shim",
   messageTemplate:
     "Re-export shim adds indirection. Import directly from the source module.",
   detect(context: ESLintRule.RuleContext): AstFinding[] {

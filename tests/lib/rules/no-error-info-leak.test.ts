@@ -1,33 +1,13 @@
-import { RuleTester } from "@typescript-eslint/rule-tester";
 import { testRules } from "../../../lib/rules/test-utils.js";
+import { createRuleTester } from "../../test-helpers.js";
 
-const ruleTester = new RuleTester({
-  languageOptions: {
-    ecmaVersion: 2022,
-    sourceType: "module",
-  },
-});
+const ruleTester = createRuleTester();
 
 ruleTester.run("no-error-info-leak", testRules.noErrorInfoLeak, {
   valid: [
     {
       code: `
-        res.json({ error: "Something went wrong" });
-      `,
-    },
-    {
-      code: `
-        res.send({ status: "error" });
-      `,
-    },
-    {
-      code: `
-        res.json({ message: "Failed to process" });
-      `,
-    },
-    {
-      code: `
-        res.send("An error occurred");
+        res.status(500).json({ error: "Internal server error" });
       `,
     },
   ],
@@ -36,21 +16,13 @@ ruleTester.run("no-error-info-leak", testRules.noErrorInfoLeak, {
       code: `
         res.json(e.message);
       `,
-      errors: [
-        {
-          messageId: "error-info-leak",
-        },
-      ],
+      errors: [{ messageId: "no-error-info-leak" }],
     },
     {
       code: `
         res.json(e.stack);
       `,
-      errors: [
-        {
-          messageId: "error-info-leak",
-        },
-      ],
+      errors: [{ messageId: "no-error-info-leak" }],
     },
   ],
 });

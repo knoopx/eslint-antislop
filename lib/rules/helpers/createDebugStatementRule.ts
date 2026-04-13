@@ -24,17 +24,20 @@ function isMemberCallByName(
 /**
  * Creates a detect function for debug statements.
  */
-export function createDebugStatementRule(message: string): AstRule["detect"] {
+export function createDebugStatementRule(
+  message: string,
+  options?: { messageId?: string },
+): AstRule["detect"] {
   return createTraversalDetect("*", (node) => {
     if (node.type === "DebuggerStatement") {
-      return [createFinding(node, message)];
+      return [createFinding(node, message, 1, options)];
     }
 
     if (
       node.type === "ExpressionStatement" &&
       isMemberCallByName(node.expression, "console", "assert")
     ) {
-      return [createFinding(node, message)];
+      return [createFinding(node, message, 1, options)];
     }
     return [];
   });

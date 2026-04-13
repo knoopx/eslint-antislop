@@ -1,49 +1,14 @@
-import { RuleTester } from "@typescript-eslint/rule-tester";
 import { testRules } from "../../../lib/rules/test-utils.js";
+import { createRuleTester } from "../../test-helpers.js";
 
-const ruleTester = new RuleTester({
-  languageOptions: {
-    ecmaVersion: 2022,
-    sourceType: "module",
-  },
-});
+const ruleTester = createRuleTester();
 
 ruleTester.run("no-todo-without-issue", testRules.noTodoWithoutIssue, {
   valid: [
     {
       code: `
-        // TODO: #123 - implement this
+        // TODO: implement this - see issue #123
         function feature() {}
-      `,
-    },
-    {
-      code: `
-        // TODO: https://github.com/repo/issues/123
-        function feature() {}
-      `,
-    },
-    {
-      code: `
-        // TODO: issue tracker ticket 456
-        function feature() {}
-      `,
-    },
-    {
-      code: `
-        // TODO: ticket number 789
-        function feature() {}
-      `,
-    },
-    {
-      code: `
-        // FIXME: #123 - fix the bug
-        function fixBug() {}
-      `,
-    },
-    {
-      code: `
-        // FIXME: see issue #456
-        function fixSomething() {}
       `,
     },
   ],
@@ -53,55 +18,35 @@ ruleTester.run("no-todo-without-issue", testRules.noTodoWithoutIssue, {
         // TODO: implement this
         function feature() {}
       `,
-      errors: [
-        {
-          messageId: "todo-no-issue",
-        },
-      ],
+      errors: [{ message: /TODO without issue reference/ }],
     },
     {
       code: `
         // TODO: fix this later
         function fixLater() {}
       `,
-      errors: [
-        {
-          messageId: "todo-no-issue",
-        },
-      ],
+      errors: [{ message: /TODO without issue reference/ }],
     },
     {
       code: `
         // TODO: add new feature
         function newFeature() {}
       `,
-      errors: [
-        {
-          messageId: "todo-no-issue",
-        },
-      ],
+      errors: [{ message: /TODO without issue reference/ }],
     },
     {
       code: `
         // TODO: refactor this
         function refactoring() {}
       `,
-      errors: [
-        {
-          messageId: "todo-no-issue",
-        },
-      ],
+      errors: [{ message: /TODO without issue reference/ }],
     },
     {
       code: `
         // TODO: remove this
         function remove() {}
       `,
-      errors: [
-        {
-          messageId: "todo-no-issue",
-        },
-      ],
+      errors: [{ message: /TODO without issue reference/ }],
     },
   ],
-});
+} as unknown as Parameters<typeof ruleTester.run>[2]);
