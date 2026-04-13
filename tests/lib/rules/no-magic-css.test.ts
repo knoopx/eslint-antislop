@@ -1,5 +1,5 @@
 import { testRules } from "../../../lib/rules/test-utils.js";
-import { createMagicCssTestCases, createRuleTester } from "../../test-helpers.js";
+import { createRuleTester } from "../../test-helpers.js";
 
 const valid = [
   // Const declarations with as const - should be valid
@@ -171,7 +171,11 @@ const invalid = [
   // Multiple CSS values in single const object (no as const)
   {
     code: `const styles = { padding: '16px', margin: '24px', color: '#abcdef' };`,
-    errors: [{ messageId: "magic-css" }, { messageId: "magic-css" }, { messageId: "magic-css" }],
+    errors: [
+      { messageId: "magic-css" },
+      { messageId: "magic-css" },
+      { messageId: "magic-css" },
+    ],
   },
   // Magic CSS in Object.assign call
   {

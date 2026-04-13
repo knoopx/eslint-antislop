@@ -22,15 +22,12 @@ function isMagicCssValue(value: string): boolean {
  * Checks if a node is inside a const declaration that should be considered
  * a CSS design token (either with 'as const' or simple constant).
  */
-function isInsideValidCssConst(
-  node: TSESTree.Node,
-  context: import("eslint").Rule.RuleContext
-): boolean {
+function isInsideValidCssConst(node: TSESTree.Node): boolean {
   let currentNode: TSESTree.Node | null = node;
 
   // Walk up the parent chain
   while (currentNode) {
-    const parent = currentNode.parent;
+    const parent: TSESTree.Node | null | undefined = currentNode.parent;
     if (!parent) break;
 
     // Check if parent is a VariableDeclarator with const
@@ -69,15 +66,13 @@ function isInsideValidCssConst(
 export const noMagicCss: AstRule = {
   id: "no-magic-css",
   name: "No Magic CSS Values",
-  description:
-    "Magic CSS values that should be extracted to design tokens.",
+  description: "Magic CSS values that should be extracted to design tokens.",
   category: "style",
   severity: "info",
   languages: ["js", "ts", "jsx", "tsx", "mjs", "cjs"],
   messageId: "magic-css",
-  messageTemplate:
-    "Magic CSS value - extract to design token or const.",
-  detect: createTraversalDetect("Literal", (node, context) => {
+  messageTemplate: "Magic CSS value - extract to design token or const.",
+  detect: createTraversalDetect("Literal", (node) => {
     // Only check string literals
     if (node.type !== "Literal" || typeof node.value !== "string") {
       return;
@@ -89,7 +84,7 @@ export const noMagicCss: AstRule = {
     }
 
     // Skip magic CSS values in valid CSS const declarations
-    if (isInsideValidCssConst(node, context)) {
+    if (isInsideValidCssConst(node)) {
       return;
     }
 
